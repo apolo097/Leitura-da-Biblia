@@ -1,8 +1,291 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano Bíblico Ortodoxo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6f0;
+    --parchment: #f2ead8;
+    --sand: #e8dcc8;
+    --gold: #b8943f;
+    --gold-light: #d4af6a;
+    --gold-pale: #f0e2bc;
+    --brown: #6b4f35;
+    --brown-dark: #3d2b1a;
+    --brown-mid: #8b6545;
+    --text: #2c1f12;
+    --text-soft: #6b5440;
+    --text-muted: #9e8060;
+    --white: #ffffff;
+    --shadow: rgba(44, 31, 18, 0.08);
+    --shadow-md: rgba(44, 31, 18, 0.14);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background-color: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(184,148,63,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(184,148,63,0.04) 0%, transparent 60%);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b8943f' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  .ornament-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .ornament-line::before,
+  .ornament-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+  }
+  .ornament-line span {
+    color: var(--gold);
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+
+  /* ───── PRAYERS ───── */
+  #page-home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 60px 0;
+  }
+  #page-home.active { display: flex; }
+
+  .home-header { text-align: center; padding-top: 40px; }
+
+  .cross-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 28px;
+    opacity: 0.75;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .home-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(2.4rem, 7vw, 3.6rem);
+    font-weight: 300;
+    color: var(--brown-dark);
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    margin-bottom: 12px;
+  }
+  .home-title em {
+    font-style: italic;
+    color: var(--gold);
+    display: block;
+    font-weight: 400;
+  }
+
+  .home-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    margin-bottom: 40px;
+  }
+
+ 
+
+  .fase-preview {
+    background: var(--white);
+    border: 1px solid var(--sand);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 28px 0;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .fase-preview h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .fase-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .fase-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: var(--text-soft);
+  }
+  .fase-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    flex-shrink: 0;
+  }
+
+  .bottom-nav-home { text-align: center; margin-top: 28px; }
+
+  
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 3px; }
+</style>
+</head>
+  
+<body>
+  <div class="container">
+    <div class="home-header">
+      <svg class="cross-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="22" y="2" width="8" height="48" rx="4" fill="#b8943f"></rect>
+        <rect x="6" y="14" width="40" height="8" rx="4" fill="#b8943f"></rect>
+        <rect x="12" y="36" width="28" height="5" rx="2.5" fill="#b8943f" transform="rotate(-8 12 36)" style="transform-origin:26px 38.5px"></rect>
+      </svg>
+
+      <h1 class="home-title">
+        Plano Bíblico
+        <em>Ortodoxo</em>
+      </h1>
+      <p class="home-subtitle">Leitura diária para formação espiritual</p>
+
+      <div class="ornament-line"><span>✦ ✦ ✦</span></div>
+
     
-  </head>
-  <body>
-    Test
+
+    
+
+      <div class="fase-preview">
+        <h3>Orações</h3>
+        <ul class="fase-list">
+          <li><span class="fase-dot"></span>ORAÇÕES DO TRISÁGIO</br>
+          <p> 
+Em nome do Pai, do Filho e do Espírito Santo. Amém.
+Glória a Ti, Senhor, glória a Ti.
+
+Ó Rei Celestial, Consolador, Espírito da Verdade, que estás em todos os lugares e tudo preenches, Tesouro dos bens e Doador da vida: vem e habita em nós, purifica-nos de toda impureza e salva, ó Bondoso, as nossas almas.
+
+Deus Santo, Forte Santo, Imortal Santo, tem piedade de nós. (3x)
+
+Glória ao Pai, ao Filho e ao Espírito Santo, agora e sempre, e pelos séculos dos séculos. Amém.
+
+Ó Santíssima Trindade, tem piedade de nós. Senhor, purifica-nos dos nossos pecados. Mestre, perdoa as nossas transgressões. Santo, visita e cura as nossas enfermidades, por amor do Teu nome.
+
+Senhor, tem piedade. (3x)
+
+Glória ao Pai, ao Filho e ao Espírito Santo, agora e sempre, e pelos séculos dos séculos. Amém.
+
+Pai nosso, que estás nos céus, santificado seja o Teu nome. Venha o Teu Reino. Seja feita a Tua vontade, assim na terra como no céu. O pão nosso de cada dia dá-nos hoje; perdoa-nos as nossas ofensas, assim como nós perdoamos aos que nos ofenderam; e não nos deixes cair em tentação, mas livra-nos do mal.
+
+Pois Teu é o Reino, o poder e a glória, do Pai, do Filho e do Espírito Santo, agora e sempre, e pelos séculos dos séculos. Amém.</p>    
+          </li>
+          
+           <li><span class="fase-dot"></span>ORAÇÃO DA MANHÃ À SANTÍSSIMA TRINDADE</br>
+          <p> 
+Ao levantar do sono, eu Te agradeço, ó Santíssima Trindade, porque, por Tua grande bondade e paciência, não Te iraste contra mim, que sou preguiçoso e pecador, nem me destruíste por minhas faltas.
+
+Mas mostraste o Teu amor pelos homens e me levantaste do meu descuido, para que eu Te glorifique ao amanhecer.
+
+Ilumina agora os olhos do meu entendimento, abre meus ouvidos para ouvir Tuas palavras e ensina-me os Teus mandamentos.
+
+Ajuda-me a fazer a Tua vontade, a cantar-Te, a confessar-Te de todo o coração e a louvar o Teu Santíssimo Nome: do Pai, do Filho e do Espírito Santo, agora e sempre, e pelos séculos dos séculos. Amém. </p>    
+          </li>
+          
+          <li><span class="fase-dot"></span>ORAÇÃO DO INÍCIO DO DIA</br>
+          <p> 
+Senhor, concede-me acolher este dia em paz.
+Ajuda-me em todas as coisas a confiar na Tua santa vontade.
+
+Em cada hora do dia, revela-me a Tua vontade.
+Abençoa minhas relações com todos ao meu redor.
+
+Ensina-me a receber tudo o que vier com paz de alma e firme convicção de que tudo é permitido por Ti.
+
+Guia meus pensamentos, palavras e ações.
+Dá-me força para suportar o cansaço do dia.
+
+Dirige minha vontade, ensina-me a orar — e Tu mesmo ora em mim. Amém.
+ </p>    
+          </li>
+
+          <li><span class="fase-dot"></span>ORAÇÃO DA NOITE</br>
+          <p> 
+Agora que o dia chegou ao fim, eu Te agradeço, Senhor,
+e peço que esta noite seja sem pecado.
+
+Se pequei hoje em palavras, ações ou pensamentos,
+perdoa-me, pois Tu és bom e amas a humanidade.
+
+Concede-me um sono tranquilo e livra-me de toda tentação do maligno.
+
+Levanta-me no tempo devido para que eu Te glorifique. Amém.
+ </p>    
+          </li>
+
+          <li><span class="fase-dot"></span>ORAÇÃO PELO PERDÃO</br>
+          <p> 
+Senhor nosso Deus, se neste dia pequei em palavra, ação ou pensamento, perdoa-me tudo.
+
+Concede-me um sono tranquilo, sem perturbações, e livra-me de toda influência do mal.
+
+Levanta-me novamente para Te glorificar, pois Tu és bendito, com Teu Filho unigênito e Teu Espírito Santo, agora e sempre. Amém.
+ </p>    
+          </li>
+          
+          <li><span class="fase-dot"></span>ORAÇÃO FINAL</br>
+          <p> 
+Ó Cristo nosso Deus, que em todo tempo e em toda hora és adorado e glorificado, que és paciente, misericordioso e compassivo…
+
+Santifica nossas almas, purifica nossos pensamentos, livra-nos de toda tribulação e mal.
+
+Cerca-nos com Teus santos anjos, para que, guiados por eles, alcancemos a fé verdadeira e o conhecimento da Tua glória.
+
+Pois Tu és bendito pelos séculos dos séculos. Amém.
+ </p>    
+          </li>
+          
+        </ul>
+      </div>
+
+    
+    </div>
+  </div>
   </body>
 </html>

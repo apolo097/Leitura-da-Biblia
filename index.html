@@ -1127,7 +1127,8 @@ function dispararConfete() {
 //  INIT
 // ════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  atualizarProgresso(Math.min(diaAtual - 1, TOTAL));
+  carregarDia(); //  ESSENCIAL
+
   console.log(`✝ Plano Bíblico Ortodoxo — ${TOTAL} dias gerados`);
 });
 </script>

@@ -778,7 +778,47 @@
 <!-- Confete -->
 <div class="confetti-wrap" id="confetti-wrap"></div>
 
+
+  
+
+  // Inicializar Firebase
+<!-- Firebase CDN (modo compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
 <script>
+    // Inicializar Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyBF5LJj-DZEI-ZQ-tiXl6ftS5UkRRiV8-E",
+    authDomain: "plano-biblia.firebaseapp.com",
+    projectId: "plano-biblia",
+    storageBucket: "plano-biblia.firebasestorage.app",
+    messagingSenderId: "54778651833",
+    appId: "1:54778651833:web:64f71174baa69c25012768"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+
+  //Salvar Progresso
+  function salvarProgresso(dia) {
+  db.collection("progresso").doc("casal").set({
+    diaAtual: dia
+  });
+}
+
+  //Carregar o progresso
+  function carregarProgresso() {
+  db.collection("progresso").doc("casal")
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        mostrarDia(doc.data().diaAtual);
+      }
+    });
+}
+
 // ════════════════════════════════════════════════════════
 //  GERADOR AUTOMÁTICO DO PLANO DE LEITURA BÍBLICA
 //  Segue exatamente as 7 fases especificadas

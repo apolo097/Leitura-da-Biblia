@@ -959,10 +959,33 @@ const NOMES_FASES = {
   7: 'Profetas',
 };
 
-function salvarDia(d) { localStorage.setItem('plano_dia', d); }
-function carregarDia() { return parseInt(localStorage.getItem('plano_dia') || '1', 10); }
+//FIREBASE
+let diaAtual = 1;
 
-let diaAtual = carregarDia();
+//  SALVAR NO FIREBASE
+function salvarDia(d) {
+  db.collection("progresso").doc("casal").set({
+    diaAtual: d
+  }, { merge: true });
+}
+
+//  CARREGAR DO FIREBASE
+function carregarDia() {
+  db.collection("progresso").doc("casal")
+    .onSnapshot((doc) => {
+      if (doc.exists) {
+        diaAtual = doc.data().diaAtual;
+      } else {
+        diaAtual = 1;
+      }
+
+      renderizarLeitura();
+    }, (error) => {
+      console.error("Erro ao carregar:", error);
+      renderizarLeitura();
+    });
+}
+
 
 // ════════════════════════════════════════════════════════
 //  RENDERIZAÇÃO
